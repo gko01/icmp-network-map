@@ -1,5 +1,5 @@
 ﻿/* =====================================================================
-   app.js â€” ICMP Network Map frontend logic
+   app.js — ICMP Network Map frontend logic
    ===================================================================== */
 
 // ---- State ----
@@ -98,10 +98,10 @@ function edgeOptions(link) {
 
 function buildTooltip(device) {
   const s = device.status || 'unknown';
-  const latencyStr = device.latency != null ? `${device.latency} ms` : 'â€”';
+  const latencyStr = device.latency != null ? `${device.latency} ms` : '—';
   const checkedStr = device.last_checked
     ? new Date(device.last_checked * 1000).toLocaleTimeString()
-    : 'â€”';
+    : '—';
   const group = device.group ? `<br><b>Group:</b> ${escHtml(device.group)}` : '';
   const notes = device.notes ? `<br><b>Notes:</b> ${escHtml(device.notes)}` : '';
   return `<b>${escHtml(device.name)}</b><br><b>IP:</b> ${escHtml(device.ip)}<br><b>Status:</b> ${escHtml(s.toUpperCase())}<br><b>Latency:</b> ${latencyStr}<br><b>Last check:</b> ${checkedStr}${group}${notes}`;
@@ -170,7 +170,7 @@ function setLinkMode(on) {
   document.getElementById('link-mode-banner').hidden = !on;
   document.getElementById('network-container').classList.toggle('link-mode', on);
   if (on) {
-    setLinkBannerMsg('ðŸ”— <strong>Link Mode</strong> â€” click the <strong>first</strong> device');
+    setLinkBannerMsg('🔗 <strong>Link Mode</strong> — click the <strong>first</strong> device');
   }
   // Refresh nodes so highlight clears
   visNodes.update(devices.map(nodeOptions));
@@ -188,14 +188,14 @@ function handleLinkModeClick(params) {
     // First node selected
     linkFirstNode = nodeId;
     const d = devices.find(x => x.id === nodeId);
-    setLinkBannerMsg(`ðŸ”— <strong>${escHtml(d?.name || nodeId)}</strong> â†’ click the <strong>second</strong> device`);
+    setLinkBannerMsg(`🔗 <strong>${escHtml(d?.name || nodeId)}</strong> → click the <strong>second</strong> device`);
     visNodes.update([nodeOptions(d)]);  // highlight first node
   } else {
     if (nodeId === linkFirstNode) {
       toast('Cannot link a device to itself', 'error');
       return;
     }
-    // Second node â€” create the link
+    // Second node — create the link
     const src = linkFirstNode;
     const tgt = nodeId;
     linkFirstNode = null;
@@ -265,7 +265,7 @@ function renderSidebar(filter = '') {
 
     const info = document.createElement('div');
     info.className = 'device-info';
-    info.innerHTML = `<div class="device-name">${escHtml(d.name)}</div><div class="device-ip">${escHtml(d.ip)}${d.group ? ' Â· ' + escHtml(d.group) : ''}</div>`;
+    info.innerHTML = `<div class="device-name">${escHtml(d.name)}</div><div class="device-ip">${escHtml(d.ip)}${d.group ? ' · ' + escHtml(d.group) : ''}</div>`;
 
     const lat = document.createElement('span');
     lat.className = 'device-latency';
@@ -290,7 +290,7 @@ function renderLinkList() {
   if (links.length === 0) {
     const empty = document.createElement('li');
     empty.style.cssText = 'color:var(--text-muted);font-size:12px;padding:16px;cursor:default;';
-    empty.textContent = 'No links yet. Use ðŸ”— Link Mode to connect devices.';
+    empty.textContent = 'No links yet. Use 🔗 Link Mode to connect devices.';
     ul.appendChild(empty);
     return;
   }
@@ -304,16 +304,16 @@ function renderLinkList() {
 
     const icon = document.createElement('span');
     icon.className = 'link-icon';
-    icon.textContent = 'â€”';
+    icon.textContent = '—';
 
     const info = document.createElement('div');
     info.className = 'link-info';
-    info.innerHTML = `<div class="link-endpoints">${escHtml(srcName)} â†” ${escHtml(tgtName)}</div>${l.label ? `<div class="link-label-text">${escHtml(l.label)}</div>` : ''}`;
+    info.innerHTML = `<div class="link-endpoints">${escHtml(srcName)} ↔ ${escHtml(tgtName)}</div>${l.label ? `<div class="link-label-text">${escHtml(l.label)}</div>` : ''}`;
 
     const delBtn = document.createElement('button');
     delBtn.className = 'link-delete-btn';
     delBtn.title = 'Delete link';
-    delBtn.textContent = 'âœ•';
+    delBtn.textContent = '✕';
     delBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       deleteLink(l.id).then(() => {
@@ -448,7 +448,7 @@ function openLinkEditModal(linkId) {
   const src = devices.find(d => d.id === l.source);
   const tgt = devices.find(d => d.id === l.target);
   document.getElementById('link-edit-desc').textContent =
-    `${src?.name || l.source}  â†”  ${tgt?.name || l.target}`;
+    `${src?.name || l.source}  ↔  ${tgt?.name || l.target}`;
   const form = document.getElementById('form-link-edit');
   form.elements['id'].value = l.id;
   form.elements['label'].value = l.label || '';

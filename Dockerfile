@@ -44,14 +44,6 @@ ENV DEVICES_FILE=/data/devices.json \
 EXPOSE 5000
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD python -c "
-import os, urllib.request, ssl
-port = os.environ.get('FLASK_PORT', '5000')
-if os.environ.get('FLASK_HTTPS', 'false').lower() == 'true':
-    ctx = ssl._create_unverified_context()
-    urllib.request.urlopen(f'https://localhost:{port}/api/devices', context=ctx)
-else:
-    urllib.request.urlopen(f'http://localhost:{port}/api/devices')
-" || exit 1
+  CMD python -c "import os,urllib.request,ssl; port=os.environ.get('FLASK_PORT','5000'); ctx=ssl._create_unverified_context() if os.environ.get('FLASK_HTTPS','false').lower()=='true' else None; urllib.request.urlopen(('https' if ctx else 'http')+'://localhost:'+port+'/api/devices',**({'context':ctx} if ctx else {}))" || exit 1
 
 CMD ["python", "app.py"]
