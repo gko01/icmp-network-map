@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ICMP Network Map</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <!-- vis-network from CDN -->
+  <script src="https://unpkg.com/vis-network@9.1.9/dist/vis-network.min.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <span class="logo">🌐 ICMP Network Map</span>
+      <div class="header-stats" id="header-stats">
+        <span class="stat up-count">&#x25CF; <span id="up-count">0</span> Up</span>
+        <span class="stat down-count">&#x25CF; <span id="down-count">0</span> Down</span>
+        <span class="stat unknown-count">&#x25CF; <span id="unknown-count">0</span> Unknown</span>
+        <span class="interval-badge">🔄 10s</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-link-mode" id="btn-link-mode" title="Click to enter Link Mode: click two nodes to connect them">🔗 Link Mode</button>
+        <button class="btn-scan-open" id="btn-scan-open">🔍 Scan Subnet</button>
+        <button class="btn-primary" id="btn-add-open">+ Add Device</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Link mode banner -->
+  <div id="link-mode-banner" hidden>
+    <span id="link-mode-msg">🔗 <strong>Link Mode</strong> — click the first device to start a link</span>
+    <button class="btn-secondary" id="btn-link-cancel">Cancel</button>
+  </div>
+
+  <!-- Main layout -->
+  <main>
+    <!-- Topology canvas -->
+    <div id="network-container"></div>
+
+    <!-- Sidebar: device list + links list -->
+    <aside id="sidebar">
+      <div class="sidebar-tabs">
+        <button class="tab-btn active" data-tab="devices">Devices</button>
+        <button class="tab-btn" data-tab="links">Links</button>
+      </div>
+
+      <!-- Devices tab -->
+      <div id="tab-devices" class="tab-panel">
+        <input type="text" id="search-input" placeholder="Search devices…" autocomplete="off" />
+        <ul id="device-list"></ul>
+      </div>
+
+      <!-- Links tab -->
+      <div id="tab-links" class="tab-panel" hidden>
+        <ul id="link-list"></ul>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Add Device Modal -->
+  <div class="modal-overlay" id="modal-add" hidden>
+    <div class="modal">
+      <h2>Add Device</h2>
+      <form id="form-add">
+        <label>Name *<input type="text" name="name" required placeholder="Router-1" /></label>
+        <label>IP Address *<input type="text" name="ip" required placeholder="192.168.1.1" /></label>
+        <label>Group<input type="text" name="group" placeholder="Core" /></label>
+        <label>Notes<input type="text" name="notes" placeholder="Optional notes" /></label>
+        <div class="modal-actions">
+          <button type="submit" class="btn-primary">Add</button>
+          <button type="button" class="btn-secondary" id="btn-add-cancel">Cancel</button>
+        </div>
+        <p class="form-error" id="add-error"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Device Modal -->
+  <div class="modal-overlay" id="modal-edit" hidden>
+    <div class="modal">
+      <h2>Edit Device</h2>
+      <form id="form-edit">
+        <input type="hidden" name="id" />
+        <label>Name *<input type="text" name="name" required /></label>
+        <label>IP Address *<input type="text" name="ip" required /></label>
+        <label>Group<input type="text" name="group" /></label>
+        <label>Notes<input type="text" name="notes" /></label>
+        <div class="modal-actions">
+          <button type="submit" class="btn-primary">Save</button>
+          <button type="button" class="btn-danger" id="btn-delete">Delete</button>
+          <button type="button" class="btn-secondary" id="btn-edit-cancel">Cancel</button>
+        </div>
+        <p class="form-error" id="edit-error"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Link Modal -->
+  <div class="modal-overlay" id="modal-link-edit" hidden>
+    <div class="modal">
+      <h2>Edit Link</h2>
+      <form id="form-link-edit">
+        <input type="hidden" name="id" />
+        <p id="link-edit-desc" class="link-desc"></p>
+        <label>Label (optional)<input type="text" name="label" placeholder="e.g. 1Gbps, WAN…" /></label>
+        <div class="modal-actions">
+          <button type="submit" class="btn-primary">Save</button>
+          <button type="button" class="btn-danger" id="btn-link-delete">Delete Link</button>
+          <button type="button" class="btn-secondary" id="btn-link-edit-cancel">Cancel</button>
+        </div>
+        <p class="form-error" id="link-edit-error"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scan Subnet Modal -->
+  <div class="modal-overlay" id="modal-scan" hidden>
+    <div class="modal">
+      <h2>🔍 Scan Subnet</h2>
+      <form id="form-scan">
+        <label>Subnet (CIDR) *<input type="text" name="subnet" required placeholder="192.168.1.0/24" autocomplete="off" /></label>
+        <label>Group <span class="label-hint">(optional tag for discovered devices)</span><input type="text" name="group" placeholder="e.g. LAN, Office" /></label>
+        <div class="modal-actions">
+          <button type="submit" class="btn-primary" id="btn-scan-submit">Scan</button>
+          <button type="button" class="btn-secondary" id="btn-scan-cancel">Cancel</button>
+        </div>
+        <p class="form-error" id="scan-error"></p>
+      </form>
+      <div id="scan-progress" hidden>
+        <div class="scan-spinner"></div>
+        <p id="scan-progress-msg" class="scan-status-msg">Scanning…</p>
+      </div>
+      <div id="scan-results" hidden>
+        <p id="scan-results-text" class="scan-results-text"></p>
+        <div class="modal-actions" style="justify-content:center;margin-top:16px;">
+          <button type="button" class="btn-primary" id="btn-scan-again">Scan Again</button>
+          <button type="button" class="btn-secondary" id="btn-scan-done">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notifications -->
+  <div id="toast-container"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

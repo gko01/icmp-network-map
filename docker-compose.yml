@@ -1,0 +1,34 @@
+services:
+  icmp-network-map:
+    build: .
+    image: garykoys/icmp-network-map:latest
+    container_name: icmp-network-map
+
+    # host network is the simplest way to give the container access to
+    # the same network interfaces as the host so ICMP pings reach real devices.
+    # On Linux this works natively. On Docker Desktop (Windows/Mac) the host
+    # is the Docker VM, not your physical machine — see DEPLOY.md for notes.
+    network_mode: host
+
+    # NET_RAW is required for icmplib raw ICMP sockets.
+    # NET_ADMIN is needed on some kernels for icmplib privileged mode.
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+
+    # Persist devices.json outside the container
+    volumes:
+      - ./data:/data
+
+    environment:
+      DEVICES_FILE: /data/devices.json
+      LINKS_FILE: /data/links.json
+      FLASK_HOST: "0.0.0.0"
+      FLASK_PORT: "5000"
+      PING_INTERVAL: "10"
+
+    restart: unless-stopped
+
+    # With network_mode: host, ports: mapping is ignored but kept as documentation
+    # ports:
+    #   - "5000:5000"

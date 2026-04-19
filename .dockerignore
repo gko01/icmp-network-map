@@ -1,0 +1,32 @@
+# Git
+.git
+.gitignore
+
+# GitHub / CI
+.github
+
+# VS Code
+.vscode
+
+# Python cache
+__pycache__
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Local data (mounted as a volume at runtime instead)
+data/
+
+# Docs only
+DEPLOY.md
+README.md
+*.md
+
+# OS artefacts
+.DS_Store
+Thumbs.db

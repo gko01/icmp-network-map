@@ -1,0 +1,55 @@
+# docker-compose.synology.yml
+#
+# Synology NAS deployment via Container Manager.
+#
+# HOW TO USE
+# ----------
+# 1. SSH into your NAS and create the project folder:
+#      mkdir -p /volume1/docker/icmp-network-map/data
+#
+# 2. Copy this file to your NAS as:
+#      /volume1/docker/icmp-network-map/docker-compose.yml
+#    (Container Manager expects the file to be named docker-compose.yml inside the project folder)
+#
+# 3. Set the IMAGE value below (see DEPLOY.md → Synology section).
+#
+# 4. In Container Manager → Projects → Create, point to that folder — or run:
+#      cd /volume1/docker/icmp-network-map
+#      docker compose up -d
+#
+# NOTE: Adjust the volume path prefix (/volume1/) if your Docker shared folder
+#       lives on a different Synology volume (e.g. /volume2/).
+
+services:
+  icmp-network-map:
+    image: garykoys/icmp-network-map:latest
+    container_name: icmp-network-map
+
+    # host network mode — required for raw ICMP sockets to reach LAN devices.
+    # Works natively on Synology (DSM runs Linux).
+    network_mode: host
+
+    # NET_RAW  — raw ICMP socket support (icmplib)
+    # NET_ADMIN — needed on some kernels for privileged ping mode
+    # Run as root so raw ICMP sockets work reliably inside the container.
+    # cap_add alone is not enough for non-root processes on all kernels.
+    user: "0"
+
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+
+    volumes:
+      # Persists devices.json and links.json on the NAS filesystem.
+      # Adjust the path if your Docker shared folder is on a different volume.
+      - /volume1/docker/icmp-network-map/data:/data
+
+    environment:
+      DEVICES_FILE: /data/devices.json
+      LINKS_FILE: /data/links.json
+      FLASK_HOST: "0.0.0.0"
+      FLASK_PORT: "5000"
+      PING_INTERVAL: "10"
+      FLASK_HTTPS: "true"
+
+    restart: unless-stopped

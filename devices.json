@@ -1,0 +1,317 @@
+[
+  {
+    "id": "159a4155-8539-4d64-af51-cfd47be8c50c",
+    "name": "InternetRouter",
+    "ip": "192.168.119.1",
+    "group": "Core",
+    "notes": "Gl.inet"
+  },
+  {
+    "id": "406c6c02-9b29-4722-99a8-c01d3ab0e626",
+    "name": "NAS10",
+    "ip": "192.168.119.10",
+    "group": "Core",
+    "notes": "Synology"
+  },
+  {
+    "id": "630d422c-4269-431c-b0ef-6eb99876de15",
+    "name": "azurevm1",
+    "ip": "10.168.117.4",
+    "group": "Azure",
+    "notes": "wireguard"
+  },
+  {
+    "id": "46bed58f-ddf8-4120-9ba1-1d09e812498a",
+    "name": "vyos",
+    "ip": "192.168.119.4",
+    "group": "Core",
+    "notes": "Vyos(119)"
+  },
+  {
+    "id": "ed9bf4fc-1836-4e34-974e-d2141e5bfd40",
+    "name": "vyos(117)",
+    "ip": "192.168.117.4",
+    "group": "Core",
+    "notes": "wireguard"
+  },
+  {
+    "id": "93f70d6d-2e65-4c6a-bb49-8a305e0a30ca",
+    "name": "Google",
+    "ip": "www.google.com",
+    "group": "Internet",
+    "notes": ""
+  },
+  {
+    "id": "938e3931-ce92-4bc8-911a-7c390ac8da02",
+    "name": "azurevm7",
+    "ip": "10.168.117.7",
+    "group": "Azure",
+    "notes": ""
+  },
+  {
+    "id": "9ed4ff68-317f-4548-883a-5d57bb1213ca",
+    "name": "esxi15",
+    "ip": "192.168.119.15",
+    "group": "",
+    "notes": ""
+  },
+  {
+    "id": "ca4d6e6f-b074-4c7c-b3d0-90cc2f917178",
+    "name": "192.168.119.9",
+    "ip": "192.168.119.9",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "e4b12f8b-0ad9-4d4b-adf1-3dd8eb01cb50",
+    "name": "192.168.119.21",
+    "ip": "192.168.119.21",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "8c56775a-e176-4707-84e7-eb7bef95f930",
+    "name": "192.168.119.30",
+    "ip": "192.168.119.30",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "1ac89a02-2f8e-47d4-8b81-2d0c6fa0bc6a",
+    "name": "192.168.119.40",
+    "ip": "192.168.119.40",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "32bcaf23-634d-430d-a4a9-f79e423eddff",
+    "name": "192.168.119.41",
+    "ip": "192.168.119.41",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "8d066114-dd41-4c5e-9995-e0cbee926515",
+    "name": "192.168.119.42",
+    "ip": "192.168.119.42",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "934a1756-0f42-4706-b8df-27cd7a68c510",
+    "name": "192.168.119.43",
+    "ip": "192.168.119.43",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "f23b7414-abc4-451e-beec-3c465a80fefa",
+    "name": "192.168.119.44",
+    "ip": "192.168.119.44",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "c7281c35-49e0-4336-90df-6eeedbfedd5f",
+    "name": "192.168.119.45",
+    "ip": "192.168.119.45",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "8d64c40e-0177-4b42-9737-f892dfb71cff",
+    "name": "192.168.119.59",
+    "ip": "192.168.119.59",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "a6f12d09-1c21-487c-8db1-138ef235233f",
+    "name": "192.168.119.60",
+    "ip": "192.168.119.60",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "4e8209e1-cef9-4cf1-bf0b-a725bab204ad",
+    "name": "192.168.119.71",
+    "ip": "192.168.119.71",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "3d74571a-ce6a-4a06-a32a-09d9fa060dc9",
+    "name": "192.168.119.74",
+    "ip": "192.168.119.74",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "b2963240-8fcf-4533-946e-a5fea6eea2b6",
+    "name": "192.168.119.75",
+    "ip": "192.168.119.75",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "289a8e2a-4980-43da-8074-7e2199881935",
+    "name": "192.168.119.76",
+    "ip": "192.168.119.76",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "fca31c17-98e5-495d-9e62-35e5d05ddc3a",
+    "name": "192.168.119.77",
+    "ip": "192.168.119.77",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "54145caa-8b09-4558-834b-7aae24e7a2db",
+    "name": "192.168.119.79",
+    "ip": "192.168.119.79",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "d2103f82-bb0d-4b07-aac5-b40eb4f3c30d",
+    "name": "192.168.119.82",
+    "ip": "192.168.119.82",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "557ca445-6ddf-43dc-94f8-46b8d6c65e1b",
+    "name": "192.168.119.83",
+    "ip": "192.168.119.83",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "9e1bbca2-64c5-412e-a827-763a09e2e80e",
+    "name": "192.168.119.90",
+    "ip": "192.168.119.90",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "07307c62-4c24-4c29-8058-9b535e207b2c",
+    "name": "192.168.119.97",
+    "ip": "192.168.119.97",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "0e34472b-d890-44a0-b581-f60efc6e81db",
+    "name": "192.168.119.104",
+    "ip": "192.168.119.104",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "58d501cc-1c85-4650-9c2e-5bf62574a5af",
+    "name": "192.168.119.106",
+    "ip": "192.168.119.106",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "a2aa4480-3fad-499e-80ef-2b0d78269cba",
+    "name": "192.168.119.117",
+    "ip": "192.168.119.117",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "4039b932-09e1-46c9-84cd-ed824b615578",
+    "name": "192.168.119.118",
+    "ip": "192.168.119.118",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "e5f3efe5-12b0-4b1b-937e-970bbf7a0df9",
+    "name": "192.168.119.124",
+    "ip": "192.168.119.124",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "2e122c6e-95aa-4243-bc74-ceed66e0afb0",
+    "name": "192.168.119.126",
+    "ip": "192.168.119.126",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "c07ed688-df84-418a-812c-31c6933c444b",
+    "name": "192.168.119.127",
+    "ip": "192.168.119.127",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "ccc7f34b-65d6-422d-a9c1-61349380db6a",
+    "name": "192.168.119.129",
+    "ip": "192.168.119.129",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "9c6812ee-603f-4d65-a2a1-efa3c6ad7a6f",
+    "name": "192.168.119.132",
+    "ip": "192.168.119.132",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "d408e4fc-1e69-42c1-878c-be28b4b93aaa",
+    "name": "192.168.119.134",
+    "ip": "192.168.119.134",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "5ed64c7a-9aea-4a4b-a387-22ea58288216",
+    "name": "192.168.119.136",
+    "ip": "192.168.119.136",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "ac8d9f44-d0ca-4017-9e1b-c919f48a3eeb",
+    "name": "192.168.119.142",
+    "ip": "192.168.119.142",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "447003c5-bef2-4a85-a2b6-ca60bdd22e85",
+    "name": "192.168.119.144",
+    "ip": "192.168.119.144",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "1b663808-8269-4d07-a78b-5751951636be",
+    "name": "192.168.119.145",
+    "ip": "192.168.119.145",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "ec2f6eea-0892-45d3-8c2d-62391e60eb17",
+    "name": "192.168.119.147",
+    "ip": "192.168.119.147",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  },
+  {
+    "id": "cc3e00d8-6771-46d8-9650-d699c8c98e7e",
+    "name": "192.168.119.253",
+    "ip": "192.168.119.253",
+    "group": "LAN",
+    "notes": "Discovered via subnet scan (192.168.119.0/24)"
+  }
+]
