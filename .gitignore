@@ -36,5 +36,5 @@ Thumbs.db
 # Docker
 *.tar
 
-# Logs
-*.log
+# Superseded by README.md
+DEPLOY.md

@@ -20,6 +20,10 @@ A lightweight web application that monitors network device **up/down** status us
 
 ---
 
+![ICMP Network Map dashboard showing live topology with devices and links](icmp-map-dashboard.jpg)
+
+---
+
 ## Requirements
 
 - Python 3.11+
@@ -71,9 +75,171 @@ docker compose up -d --build
 
 Data is persisted to `./data/` on the host — restarting or rebuilding the container does not affect it.
 
-### Deploy to Synology NAS
+---
 
-See [DEPLOY.md](DEPLOY.md) for full Synology deployment instructions.
+## Deployment
+
+Two deployment options are covered:
+
+1. **Docker on Linux / WSL** — build and run locally
+2. **Synology NAS** — push to Docker Hub, pull and run on the NAS
+
+### Option 1 — Docker (Linux host or WSL)
+
+#### Prerequisites
+
+- Docker Engine 24+ and Docker Compose v2
+- Linux host or WSL2 Ubuntu
+- User must be in the `docker` group (or use `sudo`)
+
+#### One-time WSL Docker setup
+
+```bash
+# Install Docker Engine (if not already installed)
+curl -fsSL https://get.docker.com | sh
+sudo usermod -aG docker $USER
+
+# Start the daemon and activate the new group in the current shell
+sudo service docker start
+newgrp docker
+```
+
+#### Build and run
+
+```bash
+cd /mnt/c/Users/<you>/OneDrive/lab/icmp-network-map   # adjust path
+
+# Create the data directory (persists devices.json, links.json, TLS certs)
+mkdir -p data
+
+# Build the image and start the container
+docker compose build
+docker compose up -d
+
+# Watch logs
+docker compose logs -f
+```
+
+Open **http://localhost:5000** (or **https://localhost:5000** if HTTPS is enabled).
+
+#### Useful commands
+
+```bash
+# Stop
+docker compose down
+
+# Rebuild after code changes
+docker compose build ; docker compose up -d --force-recreate
+
+# Shell into running container
+docker compose exec icmp-network-map sh
+```
+
+#### Why `network_mode: host`?
+
+ICMP raw sockets need direct access to the host's network interfaces.  
+`network_mode: host` + `cap_add: [NET_RAW, NET_ADMIN]` + `user: "0"` gives the container that access reliably across all kernel versions.
+
+> **Docker Desktop on Windows / macOS**: `network_mode: host` connects to the
+> Docker Desktop Linux VM, **not** your physical machine's interfaces.  
+> Use WSL2 with Docker Engine (not Docker Desktop) to reach your real LAN,
+> or run the app with plain `python app.py` instead.
+
+---
+
+### Option 2 — Synology NAS (Container Manager)
+
+Synology DSM runs Linux, so `network_mode: host` and raw ICMP capabilities work natively.
+
+![Container running healthy in Synology Container Manager](icmp-docker-container.jpg)
+
+#### Prerequisites
+
+- DSM 7.2+ with **Container Manager** installed (Package Center)
+- SSH access to the NAS
+- Docker Hub account (image is pushed to `garykoys/icmp-network-map:latest`)
+
+#### Step 1 — Build and push the image (from WSL)
+
+```bash
+cd /mnt/c/Users/<you>/OneDrive/lab/icmp-network-map
+
+# Build
+docker compose build
+
+# Log in and push
+docker login -u garykoys
+docker compose push
+```
+
+![Docker build output showing all stages finished](docker.build.jpg)
+
+![Docker push output showing layers pushed to Docker Hub](docker.push.jpg)
+
+#### Step 2 — Prepare the NAS
+
+```bash
+# Create project and data folders
+ssh garyk@192.168.119.10 "mkdir -p /volume1/docker/icmp-network-map/data"
+
+# Seed your existing device and link data
+scp data/devices.json garyk@192.168.119.10:/volume1/docker/icmp-network-map/data/devices.json
+scp data/links.json   garyk@192.168.119.10:/volume1/docker/icmp-network-map/data/links.json
+
+# Copy the Synology compose file
+scp docker-compose.synology.yml garyk@192.168.119.10:/volume1/docker/icmp-network-map/docker-compose.yml
+```
+
+#### Step 3 — Start on the NAS
+
+```bash
+ssh garyk@192.168.119.10
+cd /volume1/docker/icmp-network-map
+
+docker compose pull
+docker compose up -d
+docker compose logs -f
+```
+
+Open **https://192.168.119.10:5000** in your browser.  
+Accept the self-signed certificate warning on first visit (click **Advanced → Proceed**).
+
+#### Step 4 — Update (after a code change)
+
+```bash
+# On WSL — rebuild and push new image
+docker compose build ; docker compose push
+
+# On the NAS — pull and restart
+ssh garyk@192.168.119.10
+cd /volume1/docker/icmp-network-map
+docker compose pull
+docker compose up -d --force-recreate
+```
+
+#### Data persistence
+
+All runtime data lives in the mounted volume:
+
+| File | Contents |
+|------|----------|
+| `/volume1/docker/icmp-network-map/data/devices.json` | Device list |
+| `/volume1/docker/icmp-network-map/data/links.json` | Topology links |
+| `/volume1/docker/icmp-network-map/data/cert.pem` | TLS certificate |
+| `/volume1/docker/icmp-network-map/data/key.pem` | TLS private key |
+
+Data survives container restarts, image updates, and `docker compose down`.
+
+#### Port conflicts
+
+If port 5000 conflicts with another DSM service, change `FLASK_PORT` in `docker-compose.yml`:
+
+```yaml
+environment:
+  FLASK_PORT: "5001"
+```
+
+Then open that port in **DSM → Control Panel → Security → Firewall** if the firewall is enabled.
 
 ---
 
