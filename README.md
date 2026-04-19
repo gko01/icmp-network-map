@@ -157,7 +157,7 @@ Synology DSM runs Linux, so `network_mode: host` and raw ICMP capabilities work 
 
 - DSM 7.2+ with **Container Manager** installed (Package Center)
 - SSH access to the NAS
-- Docker Hub account (image is pushed to `garykoys/icmp-network-map:latest`)
+- Docker Hub account (image is published as `garykoys/icmp-network-map:latest`)
 
 #### Step 1 — Build and push the image (from WSL)
 
@@ -180,20 +180,20 @@ docker compose push
 
 ```bash
 # Create project and data folders
-ssh garyk@192.168.119.10 "mkdir -p /volume1/docker/icmp-network-map/data"
+ssh user@<your-nas-ip> "mkdir -p /volume1/docker/icmp-network-map/data"
 
 # Seed your existing device and link data
-scp data/devices.json garyk@192.168.119.10:/volume1/docker/icmp-network-map/data/devices.json
-scp data/links.json   garyk@192.168.119.10:/volume1/docker/icmp-network-map/data/links.json
+scp data/devices.json user@<your-nas-ip>:/volume1/docker/icmp-network-map/data/devices.json
+scp data/links.json   user@<your-nas-ip>:/volume1/docker/icmp-network-map/data/links.json
 
 # Copy the Synology compose file
-scp docker-compose.synology.yml garyk@192.168.119.10:/volume1/docker/icmp-network-map/docker-compose.yml
+scp docker-compose.synology.yml user@<your-nas-ip>:/volume1/docker/icmp-network-map/docker-compose.yml
 ```
 
 #### Step 3 — Start on the NAS
 
 ```bash
-ssh garyk@192.168.119.10
+ssh user@<your-nas-ip>
 cd /volume1/docker/icmp-network-map
 
 docker compose pull
@@ -201,7 +201,7 @@ docker compose up -d
 docker compose logs -f
 ```
 
-Open **https://192.168.119.10:5000** in your browser.  
+Open **https://\<your-nas-ip\>:5000** in your browser.  
 Accept the self-signed certificate warning on first visit (click **Advanced → Proceed**).
 
 #### Step 4 — Update (after a code change)
@@ -211,7 +211,7 @@ Accept the self-signed certificate warning on first visit (click **Advanced → 
 docker compose build ; docker compose push
 
 # On the NAS — pull and restart
-ssh garyk@192.168.119.10
+ssh user@<your-nas-ip>
 cd /volume1/docker/icmp-network-map
 docker compose pull
 docker compose up -d --force-recreate
@@ -223,10 +223,10 @@ All runtime data lives in the mounted volume:
 
 | File | Contents |
 |------|----------|
-| `/volume1/docker/icmp-network-map/data/devices.json` | Device list |
-| `/volume1/docker/icmp-network-map/data/links.json` | Topology links |
-| `/volume1/docker/icmp-network-map/data/cert.pem` | TLS certificate |
-| `/volume1/docker/icmp-network-map/data/key.pem` | TLS private key |
+| `<data-volume>/devices.json` | Device list |
+| `<data-volume>/links.json` | Topology links |
+| `<data-volume>/cert.pem` | TLS certificate |
+| `<data-volume>/key.pem` | TLS private key |
 
 Data survives container restarts, image updates, and `docker compose down`.
 

@@ -10,7 +10,7 @@ FROM python:3.13-slim
 
 LABEL org.opencontainers.image.title="ICMP Network Map" \
       org.opencontainers.image.description="Browser-based ICMP ping topology monitor" \
-      org.opencontainers.image.authors="garykoys"
+      org.opencontainers.image.source="https://github.com/gko01/icmp-network-map"
 
 # Copy installed packages from builder
 COPY --from=builder /install /usr/local
