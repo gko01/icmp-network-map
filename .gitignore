@@ -16,7 +16,12 @@ env/
 
 # Runtime data — never commit real device/link data or TLS keys
 data/
+devices.json
+links.json
 *.pem
+
+# Nested copies
+icmp-network-map/
 
 # IDE
 .vscode/
